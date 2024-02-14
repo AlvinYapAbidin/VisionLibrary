@@ -8,7 +8,7 @@ Vision Library is a comprehensive image processing toolkit leveraging the power 
 
 ### Prerequisites
 
-Before installing the Vision Library, ensure that OpenCV is installed on your system. This library has been tested with OpenCV version 3.5 or later. For detailed installation instructions of OpenCV, please refer to the [official OpenCV documentation](https://docs.opencv.org/master/).
+Before installing the Vision Library, ensure that OpenCV is installed on your system. This library has been tested with OpenCV version 3.5 & later. For detailed installation instructions of OpenCV, please refer to the [official OpenCV documentation](https://docs.opencv.org/master/).
 
 ### Building the Library
 

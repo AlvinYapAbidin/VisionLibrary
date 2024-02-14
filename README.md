@@ -67,5 +67,4 @@ Reduce salt and pepper noise using median blur:
 ## License
 This project is licensed under the MIT License. See the LICENSE.md file for more details.
 
-**Note: Ensure to replace `"path/to/image.jpg"` and `"path/to/template.jpg"` with the actual paths to your images. Additionally, customize the installation instructions, usage examples, and other sections as necessary to align with the specifics of your project and environment.
-**
+**Note: Ensure to replace `"path/to/image.jpg"` and `"path/to/template.jpg"` with the actual paths to your images. Additionally, customize the installation instructions, usage examples, and other sections as necessary to align with the specifics of your project and environment.**

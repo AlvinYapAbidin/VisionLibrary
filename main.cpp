@@ -9,18 +9,16 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-    //Vision::pyr("lena.png");
+    // Vision::pyr("images/lena.png");
 
-    //Vision::imgresize("lena.png");
+    // Vision::imgresize("lena.png");
 
-    //Vision::snpmedian("pepper.tiff");
+    // Vision::snpmedian("pepper.tiff");
 
-    //Vision::snpguassian("pepper.tiff");
+    // Vision::snpguassian("pepper.tiff");
 
-    //Vision::sharpen("blurry.jpg");
+    // Vision::sharpen("blurry.jpg");
 
-    //Vision::filter(std::string dir, std::string dir2);
-
-    // Vision::tmplt("lena.png", "template.png");
+    Vision::templateMatch("images/lena.png", "images/template.png");
     
 }

@@ -22,7 +22,7 @@ namespace Vision
 
     int filter(std::string dir, std::string dir2);
     
-    int tmplt(std::string dir, std::string dir2);
+    int templateMatch(std::string dir, std::string dir2);
 
 }
 

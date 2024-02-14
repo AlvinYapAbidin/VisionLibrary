@@ -24,16 +24,45 @@ namespace Vision
         Mat img = imread(dir, IMREAD_COLOR);
         Mat templ = imread(dir2, IMREAD_COLOR);
 
-        matchTemplate; // function
+        Mat result(img.rows - templ.rows + 1, img.cols - templ.cols + 1, CV_32FC1);
+
+        matchTemplate(img, templ, result, TM_CCORR_NORMED);
+
+        normalize(result, result, 0, 1, NORM_MINMAX, -1, Mat()); // visualise point of interest
+        
+        double min;
+        double max;
+
+        Point minLoc;
+        Point maxLoc;
+        Point matchLoc;
+
+        minMaxLoc(result, &min, &max, &minLoc, &maxLoc, Mat());
+
+        //print min and max values
+
+        rectangle(result, Point(maxLoc.x-templ.cols/2, maxLoc.y-templ.rows/2), Point(maxLoc.x+templ.cols/2, maxLoc.y+templ.rows/2), Scalar::all(0), 2, 8, 0);
+
+        rectangle(img, Point(maxLoc.x, maxLoc.y), Point(maxLoc.x+templ.cols, maxLoc.y+templ.rows), Scalar::all(0), 2, 8, 0);
+
+
+        imshow("Input", img);
+        imshow("Template", templ);
+
+        imshow("Result", result);
 
         waitKey(0);
 
-        return 0;
+        return 0; 
     }
 
     // Using pyramids to change the scale
     int pyr(std::string dir)
     {
+        cout << "press [i] to zoom in";
+        cout << "press [o] to zoom out";
+        cout << "press [esc] to exit";
+
         Mat img = imread(dir);
 
         const char* window_n = "Pyramids demo";

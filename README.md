@@ -12,11 +12,11 @@ Building the Library
 
 Clone the repository and compile the source code using CMake. Ensure your CMakeLists.txt is set up correctly to include OpenCV libraries.
 
-git clone https://github.com/yourusername/VisionLib.git
-cd VisionLib
-mkdir build && cd build
-cmake ..
-make
+    git clone https://github.com/yourusername/VisionLib.git
+    cd VisionLib
+    mkdir build && cd build
+    cmake ..
+    make
 
 ## Usage
 
@@ -25,42 +25,42 @@ Include Vision.hpp in your project and compile it with OpenCV. Here are some exa
 ### Drawing Shapes
 To draw shapes around object coordinates:
 
-#include "Vision.hpp"
-
-int main() {
-    Vision::draw("path/to/image.jpg");
-    return 0;
-}
+    #include "Vision.hpp"
+    
+    int main() {
+        Vision::draw("path/to/image.jpg");
+        return 0;
+    }
 
 ### Template Matching
 To perform template matching:
 
-#include "Vision.hpp"
-
-int main() {
-    Vision::templateMatch("path/to/image.jpg", "path/to/template.jpg");
-    return 0;
-}
+    #include "Vision.hpp"
+    
+    int main() {
+        Vision::templateMatch("path/to/image.jpg", "path/to/template.jpg");
+        return 0;
+    }
 
 ### Image Resizing
 To resize an image:
 
-#include "Vision.hpp"
-
-int main() {
-    Vision::imgresize("path/to/image.jpg");
-    return 0;
-}
+    #include "Vision.hpp"
+    
+    int main() {
+        Vision::imgresize("path/to/image.jpg");
+        return 0;
+    }
 
 ### Noise Reduction
 To reduce salt and pepper noise using median blur:
 
-#include "Vision.hpp"
-
-int main() {
-    Vision::snpmedian("path/to/image.jpg");
-    return 0;
-}
+    #include "Vision.hpp"
+    
+    int main() {
+        Vision::snpmedian("path/to/image.jpg");
+        return 0;
+    }
 
 ### License
 

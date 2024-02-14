@@ -17,12 +17,12 @@ To compile the Vision Library, follow these steps:
 1. Clone the repository to your local machine.
 2. Use CMake to prepare the build environment.
 3. Compile the source code.
-
-    git clone https://github.com/AlvinYapAbidin/VisionLibrary.git
-    cd VisionLibrary
-    mkdir build && cd build
-    cmake .
-    make
+    
+        git clone https://github.com/yourusername/VisionLib.git
+        cd VisionLib
+        mkdir build && cd build
+        cmake ..
+        make
 
 # Usage
 

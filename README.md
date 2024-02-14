@@ -2,49 +2,52 @@
 
 ## Introduction
 
-Vision Library is a collection of image processing functions built with OpenCV in C++. It offers a range of functionalities, from basic image manipulation like resizing and filtering to more complex operations such as template matching and noise reduction. This library is designed to help developers and researchers quickly implement and experiment with various image processing techniques.
+Vision Library is a comprehensive image processing toolkit leveraging the power of OpenCV for C++ applications. It encompasses a wide array of functionalities, from elementary image manipulations such as resizing and filtering, to advanced operations including template matching and noise reduction. Aimed at facilitating rapid implementation and experimentation with diverse image processing techniques, this library serves as an invaluable resource for developers and researchers alike.
 
 ## Installation
+
 ### Prerequisites
 
-Ensure you have OpenCV installed on your system. VisionLib is tested with OpenCV version 4.x. For installation instructions of OpenCV, refer to the official OpenCV documentation.
-Building the Library
+Before installing the Vision Library, ensure that OpenCV is installed on your system. This library has been tested with OpenCV version 4.x. For detailed installation instructions of OpenCV, please refer to the [official OpenCV documentation](https://docs.opencv.org/master/).
 
-Clone the repository and compile the source code using CMake. Ensure your CMakeLists.txt is set up correctly to include OpenCV libraries.
+### Building the Library
+
+To compile the Vision Library, follow these steps:
+
+1. Clone the repository to your local machine.
+2. Use CMake to prepare the build environment.
+3. Compile the source code.
 
     git clone https://github.com/yourusername/VisionLib.git
     cd VisionLib
     mkdir build && cd build
-    cmake ..
+    cmake .
     make
 
-## Usage
+# Usage
 
-Include Vision.hpp in your project and compile it with OpenCV. Here are some examples of how to use the functions provided in the library.
+To utilize the Vision Library in your project, include Vision.hpp and ensure your project links against OpenCV libraries. Below are several examples illustrating the use of the library's functions.
 
-### Drawing Shapes
-To draw shapes around object coordinates:
-
+## Drawing Shapes
+Draw shapes around object coordinates in an image:
     #include "Vision.hpp"
     
     int main() {
-        Vision::draw("path/to/image.jpg");
+        Vision::draw("path/to/image.jpg", "path/to/template.jpg");
         return 0;
     }
 
-### Template Matching
-To perform template matching:
-
+## Template Matching
+Execute template matching on an image:
     #include "Vision.hpp"
     
     int main() {
-        Vision::templateMatch("path/to/image.jpg", "path/to/template.jpg");
+        Vision::templateMatch("path/to/image.jpg", "path/to/template.jpg", TM_CCORR_NORMED);
         return 0;
     }
 
-### Image Resizing
-To resize an image:
-
+## Image Resizing
+Resize an image:
     #include "Vision.hpp"
     
     int main() {
@@ -52,9 +55,8 @@ To resize an image:
         return 0;
     }
 
-### Noise Reduction
-To reduce salt and pepper noise using median blur:
-
+## Noise Reduction
+Reduce salt and pepper noise using median blur:
     #include "Vision.hpp"
     
     int main() {
@@ -62,7 +64,8 @@ To reduce salt and pepper noise using median blur:
         return 0;
     }
 
-### License
+## License
+This project is licensed under the MIT License. See the LICENSE.md file for more details.
 
-This project is licensed under the MIT License - see the LICENSE.md file for details.
-Make sure to replace "path/to/image.jpg" and "path/to/template.jpg" with the actual paths to your images. Also, customize the installation, usage examples, and other sections as necessary to match the specifics of your project and environment.
+Note: Ensure to replace `"path/to/image.jpg"` and `"path/to/template.jpg"` with the actual paths to your images. Additionally, customize the installation instructions, usage examples, and other sections as necessary to align with the specifics of your project and environment.
+

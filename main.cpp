@@ -9,6 +9,8 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
+    Vision::draw("images/lena.png", "images/template.png");
+
     // Vision::pyr("images/lena.png");
 
     // Vision::imgresize("lena.png");
@@ -19,6 +21,6 @@ int main(int argc, char** argv)
 
     // Vision::sharpen("blurry.jpg");
 
-    Vision::templateMatch("images/lena.png", "images/template.png");
+    // Vision::templateMatchMethods("images/lena.png", "images/template.png");
     
 }

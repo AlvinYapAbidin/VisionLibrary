@@ -8,53 +8,99 @@ using namespace std;
 namespace Vision
 {
 
-    // Drawing shapes around object coordinates with cv::point
-    int draw(std::string dir)
+    // Drawing shapes around object template with cv::point
+    int draw(std::string image, std::string tem)
     {
-        Mat img = imread(dir, IMREAD_COLOR);
+        Mat img = imread(image, IMREAD_COLOR);
+        Mat templ = imread(tem, IMREAD_COLOR);
+        Mat result(img.rows - templ.rows + 1, img.cols - templ.cols + 1, CV_32FC1);
+
+        matchTemplate(img, templ, result, TM_CCORR_NORMED);
+        
+        normalize(result, result, 0, 1, NORM_MINMAX, -1, Mat()); 
+        
+        double min; double max; Point minLoc; Point maxLoc; Point matchLoc;
+        
+        minMaxLoc(result, &min, &max, &minLoc, &maxLoc, Mat());
+
+        Mat img2 = img.clone();
+
+        rectangle(img, Point(maxLoc.x, maxLoc.y), Point(maxLoc.x+templ.cols, maxLoc.y+templ.rows), Scalar::all(0), 2, 8, 0);
+
+        circle(img2, Point(maxLoc.x+templ.cols/2, maxLoc.y+templ.rows/2), 120, Scalar(0, 255, 0), 2, 8, 0);
+
+        imshow("Rectangle" , img);
+        imshow("Circle" , img2);
 
         waitKey(0);
 
         return 0;
     }
 
-    // Matching templates to appropriate image
-    int templateMatch(std::string dir, std::string dir2)
-    {
-        Mat img = imread(dir, IMREAD_COLOR);
-        Mat templ = imread(dir2, IMREAD_COLOR);
 
+    // Matching templates to appropriate image
+    int templateMatch(std::string image, std::string tem, int matchMethod)
+    {
+        Mat img = imread(image, IMREAD_COLOR);
+        Mat templ = imread(tem, IMREAD_COLOR);
         Mat result(img.rows - templ.rows + 1, img.cols - templ.cols + 1, CV_32FC1);
 
-        matchTemplate(img, templ, result, TM_CCORR_NORMED);
+        matchTemplate(img, templ, result, matchMethod);
 
-        normalize(result, result, 0, 1, NORM_MINMAX, -1, Mat()); // visualise point of interest
+        normalize(result, result, 0, 1, NORM_MINMAX, -1, Mat()); 
+
+        double min; double max; Point minLoc; Point maxLoc; Point matchLoc;
         
-        double min;
-        double max;
-
-        Point minLoc;
-        Point maxLoc;
-        Point matchLoc;
-
         minMaxLoc(result, &min, &max, &minLoc, &maxLoc, Mat());
-
-        //print min and max values
-
+        printf("Min value: %d Max value: %d\n" , min, max);
+        
+        rectangle(img, Point(maxLoc.x, maxLoc.y), Point(maxLoc.x+templ.cols, maxLoc.y+templ.rows), Scalar::all(0), 2, 8, 0);
         rectangle(result, Point(maxLoc.x-templ.cols/2, maxLoc.y-templ.rows/2), Point(maxLoc.x+templ.cols/2, maxLoc.y+templ.rows/2), Scalar::all(0), 2, 8, 0);
 
-        rectangle(img, Point(maxLoc.x, maxLoc.y), Point(maxLoc.x+templ.cols, maxLoc.y+templ.rows), Scalar::all(0), 2, 8, 0);
+        //printf("Original image size: %d x %d\n" , img.rows, img.cols);
+        //printf("Result image size: %d x %d\n" , result.rows, result.cols); // Result image size smaller because template can't go pass the edge of input image, when template matching
+
+        std::string methodName{};
+
+        switch (matchMethod) 
+        {
+            case cv::TM_SQDIFF: methodName = "TM_SQDIFF"; break;
+            case cv::TM_SQDIFF_NORMED: methodName = "TM_SQDIFF_NORMED"; break;
+            case cv::TM_CCORR: methodName = "TM_CCORR"; break;
+            case cv::TM_CCORR_NORMED: methodName = "TM_CCORR_NORMED"; break;
+            case cv::TM_CCOEFF: methodName = "TM_CCOEFF"; break;
+            case cv::TM_CCOEFF_NORMED: methodName = "TM_CCOEFF_NORMED"; break;
+            default: methodName = "Unknown Method"; 
+        }
+
+        cv::putText(result, methodName, cv::Point(10, 30), cv::FONT_HERSHEY_SIMPLEX, 1, cv::Scalar(0, 255, 0), 2);
 
 
         imshow("Input", img);
         imshow("Template", templ);
-
-        imshow("Result", result);
+        imshow("Result" , result);
 
         waitKey(0);
 
         return 0; 
     }
+
+    // Apply different template matching methods
+    int templateMatchMethods(std::string image, std::string tem)
+    {
+        printf("Press [esc] to go through the different filter types");
+
+        templateMatch(image, tem, TM_SQDIFF);
+        templateMatch(image, tem, TM_CCORR );
+        templateMatch(image, tem, TM_CCORR_NORMED);
+        templateMatch(image, tem, TM_CCOEFF);
+        templateMatch(image, tem, TM_CCOEFF_NORMED);
+
+        waitKey(0);
+
+        return 0; 
+    }
+
 
     // Using pyramids to change the scale
     int pyr(std::string dir)
@@ -93,6 +139,7 @@ namespace Vision
         return 0;
     }
 
+
     // Function to resize images
     int imgresize(std::string dir)
     {
@@ -120,6 +167,7 @@ namespace Vision
 
         return 0;
     }
+
 
     // Function to get rid of salt and peper noise using median blur
     int snpmedian(std::string dir)
@@ -159,6 +207,7 @@ namespace Vision
 
         return 0;
     }
+
 
     // Function to get rid of salt and peper noise using gaussian blur
     int snpguassian(std::string dir)
@@ -201,6 +250,7 @@ namespace Vision
 
     }
     
+
     // Function to sharpen an image
     int sharpen(std::string dir)
     {
@@ -222,23 +272,15 @@ namespace Vision
         return 0;
     }
 
+
     // Apply kernel filters to images and see their effects
-    int filter(std::string dir, std::string dir2)
+    int filter(std::string dir)
     {
          // Read Image
         Mat image = imread(dir, 0);
-        Mat image2 = imread(dir2, 0);
-    
-        // Print Error message if image is null
-       if (image.empty()) 
-       {
-            cout << "Could not read image" << endl;
-            return -1; // Indicate failure
-        }
 
-        
         // Apply identity filter using kernel
-        Mat kernel1 = (Mat_<double>(3,3) << 0, 0, 0, 0, 1, 0, 0, 0, 0);
+        Mat kernel1 = (Mat_<double>(3,3) << 0, 0, 0, 0, 1, 0, 0, 0, 0); // Edit identity filter here by adjusting filter values
         Mat identity;
         filter2D(image, identity, -1 , kernel1, Point(-1, -1), 0, 4);
 
@@ -270,47 +312,4 @@ namespace Vision
 
         return 0; 
     }
-    
-    //
-    int tmplt(std::string dir, std::string dir2)
-    {
-        Mat img = imread(dir, IMREAD_COLOR);
-        Mat tmplate = imread(dir2, IMREAD_COLOR);
-
-        Mat result(img.rows - tmplate.rows + 1, img.cols - tmplate.cols + 1, CV_32FC1);
-
-        matchTemplate(img, tmplate, result, TM_CCORR_NORMED);
-
-        normalize(result, result, 0, 1, NORM_MINMAX, -1, Mat()); // visualise point of interest
-
-        double min;
-        double max;
-
-        Point minLoc;
-        Point maxLoc;
-        Point matchLoc;
-
-        minMaxLoc(result, &min, &max, &minLoc, &maxLoc, Mat());
-
-        //print min and max values
-
-        rectangle(result, Point(maxLoc.x-tmplate.cols/2, maxLoc.y-tmplate.rows/2), Point(maxLoc.x+tmplate.cols/2, maxLoc.y+tmplate.rows/2), Scalar::all(0), 2, 8, 0);
-
-        rectangle(img, Point(maxLoc.x, maxLoc.y), Point(maxLoc.x+tmplate.cols, maxLoc.y+tmplate.rows), Scalar::all(0), 2, 8, 0);
-
-
-        imshow("Input", img);
-        imshow("Template", tmplate);
-
-        imshow("Result", result);
-
-        waitKey(0);
-
-        return 0; 
-    }
-    
-
-
-
-    
 }

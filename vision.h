@@ -10,6 +10,12 @@ using namespace cv;
 
 namespace Vision
 {
+    int draw(std::string image, std::string tem);
+
+    int templateMatchMethods(std::string image, std::string tem);
+    
+    int templateMatch(std::string image, std::string tem, int matchMethod);
+
     int pyr(std::string dir);
 
     int imgresize(std::string dir);
@@ -20,9 +26,8 @@ namespace Vision
 
     int sharpen(std::string dir);
 
-    int filter(std::string dir, std::string dir2);
+    int filter(std::string dir);
     
-    int templateMatch(std::string dir, std::string dir2);
 
 }
 

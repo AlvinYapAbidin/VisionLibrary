@@ -8,7 +8,7 @@ using namespace std;
 namespace Vision
 {
 
-    // Drawing shapes around object template with cv::point
+    // Drawing shapes around object template
     int draw(std::string image, std::string tem)
     {
         Mat img = imread(image, IMREAD_COLOR);

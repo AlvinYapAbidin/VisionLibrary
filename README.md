@@ -26,43 +26,55 @@ To compile the Vision Library, follow these steps:
 
 # Usage
 
-To utilize the Vision Library in your project, include Vision.hpp and ensure your project links against OpenCV libraries. Below are several examples illustrating the use of the library's functions.
+To utilize the Vision Library in your project, include 'Vision.hpp' and ensure your project links against OpenCV libraries. Below are several examples illustrating the use of the library's functions.
 
 ## Drawing Shapes
 Draw shapes around object coordinates in an image:
-    #include "Vision.hpp"
-    
-    int main() {
-        Vision::draw("path/to/image.jpg", "path/to/template.jpg");
-        return 0;
-    }
+
+       #include "Vision.hpp"
+
+       int main() {
+           Vision::drawShapes("path/to/image.jpg");
+           return 0;
+       }
 
 ## Template Matching
 Execute template matching on an image:
-    #include "Vision.hpp"
-    
-    int main() {
-        Vision::templateMatch("path/to/image.jpg", "path/to/template.jpg", TM_CCORR_NORMED);
-        return 0;
-    }
+
+       #include "Vision.hpp"
+
+       int main() {
+           Vision::templateMatch("path/to/image.jpg", "path/to/template.jpg", TM_CCORR_NORMED);
+           return 0;
+       }
 
 ## Image Resizing
 Resize an image:
-    #include "Vision.hpp"
-    
-    int main() {
-        Vision::imgresize("path/to/image.jpg");
-        return 0;
-    }
+
+       #include "Vision.hpp"
+
+       int main() {
+           Vision::imgresize("path/to/image.jpg");
+           return 0;
+       }
 
 ## Noise Reduction
 Reduce salt and pepper noise using median blur:
-    #include "Vision.hpp"
-    
-    int main() {
-        Vision::snpmedian("path/to/image.jpg");
-        return 0;
-    }
+
+       #include "Vision.hpp"
+       
+       int main() {
+           Vision::snpmedian("path/to/image.jpg");
+           return 0;
+       }
+
+Additionally, the library includes functions for gaussian blur noise reduction, sharpening images, and applying kernel filters to explore their effects on images.
+
+# Advanced Features
+- Template Matching with Multiple Methods: The library supports various template matching methods, allowing for flexible image analysis.
+- Pyramid Scaling: Functions for pyramid upscaling and downscaling are provided to adjust image resolution effectively.
+- Noise Reduction Techniques: Both median and Gaussian blur techniques are available for noise reduction, with additional functionality for sharpening images post-blur.
+- Kernel Filter Application: Explore the impact of different kernel filters on images, including identity, blur, and custom filters.
 
 ## License
 This project is licensed under the MIT License. See the LICENSE.md file for more details.

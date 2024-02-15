@@ -10,7 +10,9 @@ using namespace cv;
 
 namespace Vision
 {
-    int draw(std::string image, std::string tem);
+    int drawShapes(std::string image);
+
+    int drawTemplate(std::string image, std::string tem);
 
     int templateMatchMethods(std::string image, std::string tem);
     

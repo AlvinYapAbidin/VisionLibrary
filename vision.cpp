@@ -7,9 +7,30 @@ using namespace std;
 
 namespace Vision
 {
+    int drawShapes(std::string image)
+    {
+        Mat img = imread(image, IMREAD_COLOR);
+        
+        // Points for rectangle
+        Point vt = Point(50, 100);// Specify the rectangle vertex
+        Point vtOp = Point(250, 300);// Specify the rectangle opposite vertex
 
-    // Drawing shapes around object template
-    int draw(std::string image, std::string tem)
+        // Center point for circle
+        Point center = Point(600, 500);
+
+        rectangle(img, vt, vtOp, Scalar::all(0), 2, 8, 0);
+
+        circle(img, center, 120, Scalar(0, 255, 0), FILLED, 8, 0);
+
+        imshow("Shapes" , img);
+
+        waitKey(0);
+
+        return 0;
+    }
+
+    // Drawing shapes around object template with cv::point
+    int drawTemplate(std::string image, std::string tem)
     {
         Mat img = imread(image, IMREAD_COLOR);
         Mat templ = imread(tem, IMREAD_COLOR);

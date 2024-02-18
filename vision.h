@@ -10,6 +10,8 @@ using namespace cv;
 
 namespace Vision
 {
+    int rotateImage(std::string image);
+
     int drawShapes(std::string image);
 
     int drawTemplate(std::string image, std::string tem);

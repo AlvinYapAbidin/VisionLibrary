@@ -7,6 +7,35 @@ using namespace std;
 
 namespace Vision
 {
+    // Rotate images
+    int rotateImage(std::string image)
+    {
+        Mat imgOriginal = imread(image);
+
+        double angle = 45;  //Adjust to the angle you would like to rotate
+
+
+        cv::Point2f center((imgOriginal.cols-1)/2.0, (imgOriginal.rows-1)/2.0);
+        cv::Mat rot = cv::getRotationMatrix2D(center, angle, 1.0);
+
+        // Find the rotated bounding rectangle size to find the edges where the rotated image falls outside the original image's bounds
+        Rect2f box = RotatedRect(Point2f(), imgOriginal.size(), angle).boundingRect2f();
+        // Ensure rotated image centered inside output image frame
+        rot.at<double>(0,2) += box.width/2.0 - imgOriginal.cols/2.0;
+        rot.at<double>(1,2) += box.height/2.0 - imgOriginal.rows/2.0;
+
+        Mat output;
+        warpAffine(imgOriginal, output, rot, box.size());
+
+        imshow("Original image", imgOriginal);
+        imshow("Rotated image", output);
+
+        waitKey(0);
+
+        return 0;
+    }
+
+    // Draw shapes in images
     int drawShapes(std::string image)
     {
         Mat img = imread(image, IMREAD_COLOR);
@@ -29,43 +58,13 @@ namespace Vision
         return 0;
     }
 
-    // Drawing shapes around object template with cv::point
-    int drawTemplate(std::string image, std::string tem)
-    {
-        Mat img = imread(image, IMREAD_COLOR);
-        Mat templ = imread(tem, IMREAD_COLOR);
-        Mat result(img.rows - templ.rows + 1, img.cols - templ.cols + 1, CV_32FC1);
-
-        matchTemplate(img, templ, result, TM_CCORR_NORMED);
-        
-        normalize(result, result, 0, 1, NORM_MINMAX, -1, Mat()); 
-        
-        double min; double max; Point minLoc; Point maxLoc; Point matchLoc;
-        
-        minMaxLoc(result, &min, &max, &minLoc, &maxLoc, Mat());
-
-        Mat img2 = img.clone();
-
-        rectangle(img, Point(maxLoc.x, maxLoc.y), Point(maxLoc.x+templ.cols, maxLoc.y+templ.rows), Scalar::all(0), 2, 8, 0);
-
-        circle(img2, Point(maxLoc.x+templ.cols/2, maxLoc.y+templ.rows/2), 120, Scalar(0, 255, 0), 2, 8, 0);
-
-        imshow("Rectangle" , img);
-        imshow("Circle" , img2);
-
-        waitKey(0);
-
-        return 0;
-    }
-
-
     // Matching templates to appropriate image
     int templateMatch(std::string image, std::string tem, int matchMethod)
     {
         Mat img = imread(image, IMREAD_COLOR);
         Mat templ = imread(tem, IMREAD_COLOR);
         Mat result(img.rows - templ.rows + 1, img.cols - templ.cols + 1, CV_32FC1);
-
+        
         matchTemplate(img, templ, result, matchMethod);
 
         normalize(result, result, 0, 1, NORM_MINMAX, -1, Mat()); 
@@ -74,7 +73,7 @@ namespace Vision
         
         minMaxLoc(result, &min, &max, &minLoc, &maxLoc, Mat());
         printf("Min value: %d Max value: %d\n" , min, max);
-        
+
         rectangle(img, Point(maxLoc.x, maxLoc.y), Point(maxLoc.x+templ.cols, maxLoc.y+templ.rows), Scalar::all(0), 2, 8, 0);
         rectangle(result, Point(maxLoc.x-templ.cols/2, maxLoc.y-templ.rows/2), Point(maxLoc.x+templ.cols/2, maxLoc.y+templ.rows/2), Scalar::all(0), 2, 8, 0);
 
@@ -122,7 +121,6 @@ namespace Vision
         return 0; 
     }
 
-
     // Using pyramids to change the scale
     int pyr(std::string dir)
     {
@@ -160,7 +158,6 @@ namespace Vision
         return 0;
     }
 
-
     // Function to resize images
     int imgresize(std::string dir)
     {
@@ -188,7 +185,6 @@ namespace Vision
 
         return 0;
     }
-
 
     // Function to get rid of salt and peper noise using median blur
     int snpmedian(std::string dir)
@@ -228,7 +224,6 @@ namespace Vision
 
         return 0;
     }
-
 
     // Function to get rid of salt and peper noise using gaussian blur
     int snpguassian(std::string dir)
@@ -271,7 +266,6 @@ namespace Vision
 
     }
     
-
     // Function to sharpen an image
     int sharpen(std::string dir)
     {
@@ -292,7 +286,6 @@ namespace Vision
 
         return 0;
     }
-
 
     // Apply kernel filters to images and see their effects
     int filter(std::string dir)
@@ -333,4 +326,23 @@ namespace Vision
 
         return 0; 
     }
+
+    // Drawing shapes around object template with cv::point
+    // int drawTemplate(std::string image, std::string tem)
+    // {
+    //     Mat img = imread(image, IMREAD_COLOR);
+    //     Mat templ = imread(tem, IMREAD_COLOR);
+    //     Mat result(img.rows - templ.rows + 1, img.cols - templ.cols + 1, CV_32FC1);
+    //     matchTemplate(img, templ, result, TM_CCORR_NORMED);
+    //     normalize(result, result, 0, 1, NORM_MINMAX, -1, Mat()); 
+    //     double min; double max; Point minLoc; Point maxLoc; Point matchLoc;
+    //     minMaxLoc(result, &min, &max, &minLoc, &maxLoc, Mat());
+    //     Mat img2 = img.clone();
+    //     rectangle(img, Point(maxLoc.x, maxLoc.y), Point(maxLoc.x+templ.cols, maxLoc.y+templ.rows), Scalar::all(0), 2, 8, 0);
+    //     circle(img2, Point(maxLoc.x+templ.cols/2, maxLoc.y+templ.rows/2), 120, Scalar(0, 255, 0), 2, 8, 0);
+    //     imshow("Rectangle" , img);
+    //     imshow("Circle" , img2);
+    //     waitKey(0);
+    //     return 0;
+    // }
 }

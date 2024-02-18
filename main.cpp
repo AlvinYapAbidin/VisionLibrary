@@ -9,7 +9,9 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-    Vision::drawShapes("images/lena.png"); // Adjust shape values in function
+    Vision::rotateImage("images/lena.png");
+
+    // Vision::drawShapes("images/lena.png"); 
 
     // Vision::drawTemplate("images/lena.png", "images/template.png");
 

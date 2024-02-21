@@ -7,13 +7,50 @@ using namespace std;
 
 namespace Vision
 {
+    // Harris Corner Detector
+    int cornerDetector(std::string image)
+    {
+        Mat img = imread(image);
+        Mat imgGray;
+        Mat output = Mat::zeros(img.size(), CV_32FC1);
+
+        cvtColor(img,imgGray, COLOR_BGR2GRAY);
+        
+        int blockSize = 2;
+        int apertureSize = 3;
+        double k = 0.04;
+        cornerHarris(imgGray, output, blockSize, apertureSize, k);
+
+        Mat outputNorm;
+        Mat outputNormScaled;
+        normalize(output, outputNorm, 0, 255 ,NORM_MINMAX, CV_32FC1, Mat()); // Ensure cornerHarris values between 0-255
+        convertScaleAbs(outputNorm, outputNormScaled); // outputNorm is CV_32FC1, imshow expects CV_8UC1
+        
+
+        for (int i = 0; i < outputNorm.rows; i++)
+        {
+            for (int j = 0; j < outputNorm.cols; j++)
+            {
+                if ( (int) outputNorm.at<float>(i,j) >  150 )
+                {
+                    circle( outputNormScaled, Point(j,i), 5, Scalar(0), 2, 8, 0);
+                }
+            }
+        }
+
+        imshow("Input image", img);
+        imshow("Corner detection", outputNormScaled);
+
+        waitKey();
+        return 0;
+    }
+
     // Rotate images
     int rotateImage(std::string image)
     {
         Mat imgOriginal = imread(image);
 
         double angle = 45;  //Adjust to the angle you would like to rotate
-
 
         cv::Point2f center((imgOriginal.cols-1)/2.0, (imgOriginal.rows-1)/2.0);
         cv::Mat rot = cv::getRotationMatrix2D(center, angle, 1.0);

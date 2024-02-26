@@ -1,12 +1,56 @@
 #include "opencv2/highgui.hpp"
 #include "opencv2/imgcodecs.hpp"
 #include "opencv2/imgproc.hpp"
+#include "opencv2/features2d.hpp"
+#include "opencv2/xfeatures2d.hpp"
 #include <iostream>
 using namespace cv;
 using namespace std;
 
 namespace Vision
 {
+    int featureDetection(std::string image1, std::string image2)
+    {
+        Mat img1 = imread(image1, IMREAD_GRAYSCALE);
+        Mat img1Resize;
+        Mat img2 = imread(image2, IMREAD_GRAYSCALE);
+        Mat img2Resize;
+
+        resize(img1, img1Resize, Size(), 0.2, 0.2);
+        resize(img2, img2Resize, Size(), 0.2, 0.2);
+
+
+        // Step 1: Detect the keypoints using SIFT Detector
+        Ptr<SIFT> detector = SIFT::create();
+        std::vector<KeyPoint> keypoints1, keypoints2;
+        Mat descriptors1, descriptors2;
+        detector->detectAndCompute(img1Resize, noArray(), keypoints1, descriptors1);
+        detector->detectAndCompute(img2Resize, noArray(), keypoints2, descriptors2);
+
+        // Step 2: Matching descriptor vectors
+        BFMatcher matcher(NORM_L2);
+        std::vector<cv::DMatch> matches;
+        matcher.match(descriptors1, descriptors2, matches);
+
+        // Sort matches by score
+        std::sort(matches.begin(), matches.end());
+
+        // Keep only the top N matches
+        int N = 10;
+        std::vector<cv::DMatch> bestMatches(matches.begin(), matches.begin() + std::min(N, (int)matches.size()));
+
+        // Draw matches
+        Mat img_matches;
+        drawMatches(img1Resize, keypoints1, img2Resize, keypoints2, bestMatches, img_matches);
+
+        // Show detected matches
+        imshow("Matches", img_matches);
+
+        waitKey();
+        return 0;
+
+    }
+
     // Harris Corner Detector
     int cornerDetector(std::string image)
     {
@@ -31,7 +75,7 @@ namespace Vision
         {
             for (int j = 0; j < outputNorm.cols; j++)
             {
-                if ( (int) outputNorm.at<float>(i,j) >  150 )
+                if ( (int) outputNorm.at<float>(i,j) >  160 )
                 {
                     circle( outputNormScaled, Point(j,i), 5, Scalar(0), 2, 8, 0);
                 }
@@ -343,7 +387,7 @@ namespace Vision
     
         // Blurred using kernel
         // Initialize matrix with all ones
-        Mat kernel2 = Mat::ones(5,5, CV_64F);
+        Mat kernel2 = Mat::ones(5,5, CV_64F); // 5x5 matrix
         // Normalize the elements
         kernel2 = kernel2 / 25;
         Mat imgBlur;
@@ -352,7 +396,7 @@ namespace Vision
 
         // Blurred using kernel
         // Initialize matrix with all ones
-        Mat kernel3 = Mat::ones(9,9, CV_64F);
+        Mat kernel3 = Mat::ones(9,9, CV_64F); // 9x9 matrix
         // Normalize the elements
         kernel3 = kernel3 / 81;
         Mat imgBlur2;

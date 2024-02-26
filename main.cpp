@@ -9,7 +9,9 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-    Vision::cornerDetector("images/building.jpg");
+    Vision::featureDetection("images/feature1.JPG", "images/feature2.JPG");
+
+    //Vision::cornerDetector("images/building.jpg");
 
     //Vision::rotateImage("images/lena.png");
 

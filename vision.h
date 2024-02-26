@@ -10,6 +10,8 @@ using namespace cv;
 
 namespace Vision
 {
+    int featureDetection(std::string image1, std::string image2);
+
     int cornerDetector(std::string image);
 
     int rotateImage(std::string image);

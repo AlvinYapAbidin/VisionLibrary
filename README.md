@@ -20,7 +20,6 @@ To compile the Vision Library, follow these steps:
 
        git clone https://github.com/AlvinYapAbidin/VisionLib.git
        cd VisionLib
-       mkdir build && cd build
        cmake ..
        make
 
